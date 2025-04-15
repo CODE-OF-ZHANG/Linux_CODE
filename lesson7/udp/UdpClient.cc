@@ -50,7 +50,7 @@
 //     std::string message;
 //     char buffer[1024];
 //     while(true)
-//     {
+//     { 
 //         std::cout << "Please Enter@ ";
 //         getline(std::cin, message);
 //         // std::cout << message << std::endl;
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in server;
     bzero(&server, sizeof(server));
     server.sin_family = AF_INET;
-    server.sin_port = htons(serverport); //?
+    server.sin_port = htons(serverport);
     server.sin_addr.s_addr = inet_addr(serverip.c_str());
     socklen_t len = sizeof(server);
 

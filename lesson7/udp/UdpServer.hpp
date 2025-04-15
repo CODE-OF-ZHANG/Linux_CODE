@@ -113,9 +113,9 @@ const int size = 1024;
 class UdpServer
 {
 public:
-    UdpServer(const uint16_t &port = defaultport, const std::string &ip = defaultip) : sockfd_(0), port_(port), ip_(ip), isrunning_(false)
-    {
-    }
+    UdpServer(const uint16_t &port = defaultport, const std::string &ip = defaultip)
+        : sockfd_(0), port_(port), ip_(ip), isrunning_(false) {}
+
     void Init()
     {
         // 1. 创建udp socket
@@ -141,6 +141,7 @@ public:
         }
         lg(Info, "bind success, errno: %d, err string: %s", errno, strerror(errno));
     }
+
     void Run(func_t func) // 对代码进行分层
     {
         isrunning_ = true;
@@ -155,12 +156,17 @@ public:
                 lg(Warn, "recvfrom error, errno: %d, err string: %s", errno, strerror(errno));
                 continue;
             }
+
+            // 客户端的ip 和 端口号
+            uint16_t port = client.sin_port;
+
             inbuffer[n] = 0;
             std::string info = inbuffer;
             std::string echo_string = func(info);
             sendto(sockfd_, echo_string.c_str(), echo_string.size(), 0, (const sockaddr *)&client, len);
         }
     }
+
     ~UdpServer()
     {
         if (sockfd_ > 0)
