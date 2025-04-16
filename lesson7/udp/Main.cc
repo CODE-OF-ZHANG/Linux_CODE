@@ -49,66 +49,67 @@ void Usage(std::string proc)
               << std::endl;
 }
 
-std::string Handler(const std::string &str)
-{
-    std::string res = "Server get a message: ";
-    res += str;
-    std::cout << res << std::endl;
+// std::string Handler(const std::string &info, const std::string& clientip, uint16_t clientport)
+// {
+//     std::cout << "[" << clientip << ":" << clientport << "]# " << info << std::endl;
+//     std::string res = "Server get a message: ";
+//     res += info;
+//     std::cout << res << std::endl;
 
-    return res;
-}
+//     return res;
+// }
 
-bool SafeCheck(const std::string &cmd)
-{
-    int safe = false;
-    std::vector<std::string> key_word =
-        {
-            "rm",
-            "mv",
-            "cp",
-            "top",
-            "apt",
-            "kill",
-            "sudo",
-            "while",
-            "unlink",
-            "uninstall"};
+// bool SafeCheck(const std::string &cmd)
+// {
+//     int safe = false;
+//     std::vector<std::string> key_word =
+//         {
+//             "rm",
+//             "mv",
+//             "cp",
+//             "top",
+//             "apt",
+//             "kill",
+//             "sudo",
+//             "while",
+//             "unlink",
+//             "uninstall"};
 
-    for(auto word : key_word)
-    {
-        auto pos = cmd.find(word);
-        if (pos != std::string::npos)
-            return false;
-    }
-    return true;
-}
+//     for(auto word : key_word)
+//     {
+//         auto pos = cmd.find(word);
+//         if (pos != std::string::npos)
+//             return false;
+//     }
+//     return true;
+// }
 
-std::string ExcuteCommand(const std::string &cmd)
-{
-    std::cout << "get a request cmd: " << cmd << std::endl;
+// std::string ExcuteCommand(const std::string &cmd)
+// {
+//     std::cout << "get a request cmd: " << cmd << std::endl;
 
-    if(!SafeCheck(cmd))
-        return "Bad man";
+//     if(!SafeCheck(cmd))
+//         return "Bad man";
 
-    FILE *fp = popen(cmd.c_str(), "r");
-    if (nullptr == fp)
-    {
-        perror("popen");
-        return "error";
-    }
-    std::string result;
-    char buffer[4096];
-    while (true)
-    {
-        char *ok = fgets(buffer, sizeof(buffer), fp);
-        if (ok == nullptr)
-            break;
-        result += buffer;
-    }
-    pclose(fp);
+//     FILE *fp = popen(cmd.c_str(), "r");
+//     if (nullptr == fp)
+//     {
+//         perror("popen");
+//         return "error";
+//     }
+//     std::string result;
+//     char buffer[4096];
+//     while (true)
+//     {
+//         char *ok = fgets(buffer, sizeof(buffer), fp);
+//         if (ok == nullptr)
+//             break;
+//         result += buffer;
+//     }
+//     pclose(fp);
 
-    return result;
-}
+//     return result;
+// }
 
 // ./udpserver port
 int main(int argc, char *argv[])
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
     std::unique_ptr<UdpServer> svr(new UdpServer(port));
 
     svr->Init(/**/);
-    svr->Run(Handler);
+    svr->Run();
 
     return 0;
 }
